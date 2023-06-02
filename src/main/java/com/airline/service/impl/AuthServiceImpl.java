@@ -36,16 +36,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
         User currentUser = userRepository.findUserByAccount(loginRequest.getAccount());
-//        if (currentUser != null) {
         UserDtoResponse userDtoResponse = userConverter.entityToDto(currentUser);
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        userDtoResponse.getEmail(), loginRequest.getPassword()));
+                        userDtoResponse.getUserName(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Gọi hàm tạo Token
         String token = tokenProvider.generateToken(authentication);
-        LoginResponse loginResponse = new LoginResponse(String.valueOf(userDtoResponse), token);
+        LoginResponse loginResponse = new LoginResponse(userDtoResponse, token);
         return loginResponse;
     }
     @Override
