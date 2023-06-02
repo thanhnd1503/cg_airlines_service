@@ -90,10 +90,9 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-//        http.authorizeHttpRequests() // links start with /api/
-//                .requestMatchers("/api/auth/**","/api/products/**","/api/package-details/**", "/api/categorys/**",
-//                        "/api/orders/**","/api/cart/**")// perform segregate authorize
-//                .permitAll();
+        http.authorizeHttpRequests() // links start with /api/
+                .requestMatchers("/api/auth/**")// perform segregate authorize
+                .permitAll();
 
         // Pages require login with role: ROLE_ADMIN.
         // If not login at admin role yet, redirect to /login

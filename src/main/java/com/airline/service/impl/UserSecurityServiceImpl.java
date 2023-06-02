@@ -23,14 +23,14 @@ public class UserSecurityServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserName(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("This" +email + "was not found in database!");
+            throw new UsernameNotFoundException("This" +username + "was not found in database!");
         }
 
-        List<String> roles = userRepository.findRolesByEmail(email);
+        List<String> roles = userRepository.findRolesByUserName(username);
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (String role: roles) {
@@ -39,7 +39,7 @@ public class UserSecurityServiceImpl implements UserDetailsService {
         }
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getUserName(),
                 user.getPassword(),
                 grantedAuthorities);
 

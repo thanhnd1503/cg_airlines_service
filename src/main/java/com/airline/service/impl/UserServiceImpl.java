@@ -1,5 +1,6 @@
 package com.airline.service.impl;
 
+import com.airline.converter.UserConverter;
 import com.airline.dto.userDto.request.UserDtoCreateRequest;
 import com.airline.dto.userDto.request.UserDtoPassword;
 import com.airline.dto.userDto.request.UserDtoUpdate;
@@ -7,21 +8,39 @@ import com.airline.dto.userDto.response.UserDtoResponse;
 import com.airline.dto.userDto.response.UserDtoResponseDetail;
 import com.airline.entity.Role;
 import com.airline.entity.User;
+import com.airline.entity.UserRole;
 import com.airline.payload.response.checkEmailPassword;
+import com.airline.repository.RoleRepository;
 import com.airline.repository.UserRepository;
+import com.airline.repository.UserRoleRepository;
 import com.airline.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository roleRepository;
+    private final UserConverter userConverter;
+
     @Autowired
     UserRepository repository;
+
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, UserConverter userConverter) {
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.roleRepository = roleRepository;
+        this.userConverter = userConverter;
+    }
 
     @Override
     public List<UserDtoResponse> findAll() {
@@ -50,12 +69,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public checkEmailPassword save(UserDtoCreateRequest userDtoCreateRequest) {
-        return null;
+        User email = userRepository.findUserByEmail(userDtoCreateRequest.getEmail());
+        User userName = userRepository.findUserByUserName(userDtoCreateRequest.getUserName());
+        checkEmailPassword checkEmailPassword = new checkEmailPassword();
+        if (email != null && userName != null) {
+            checkEmailPassword.setUserName("userName already exists");
+            checkEmailPassword.setEmail("email already exists");
+            return checkEmailPassword;
+        } else if (email == null && userName != null) {
+            checkEmailPassword.setUserName("userName already exists");
+            return checkEmailPassword;
+        } else if (email != null && userName == null) {
+            checkEmailPassword.setEmail("email already exists");
+            return checkEmailPassword;
+        } else {
+            User newUser = userConverter.dtoToEntity(userDtoCreateRequest);
+            String hashedPassword = BCrypt.hashpw(userDtoCreateRequest.getPassword(), BCrypt.gensalt(10));
+            newUser.setPassword(hashedPassword);
+            userRepository.save(newUser);
+            userDtoCreateRequest.getRoles().forEach(role -> {
+                UserRole userRole = new UserRole(newUser, role);
+                userRoleRepository.save(userRole);
+            });
+
+            return null;
+        }
     }
 
-    public void saveNewUser(User user){
-        repository.save(user);
-    }
+
 
     @Override
     public Boolean remove(Long id) {
