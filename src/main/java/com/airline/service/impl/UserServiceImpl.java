@@ -86,11 +86,13 @@ public class UserServiceImpl implements UserService {
             User newUser = userConverter.dtoToEntity(userDtoCreateRequest);
             String hashedPassword = BCrypt.hashpw(userDtoCreateRequest.getPassword(), BCrypt.gensalt(10));
             newUser.setPassword(hashedPassword);
+
             userRepository.save(newUser);
-            userDtoCreateRequest.getRoles().forEach(role -> {
+//            userDtoCreateRequest.getRoles().forEach(role -> {
+                Role role = new Role(2,"ROLE_CUSTOMER","khách hàng");
                 UserRole userRole = new UserRole(newUser, role);
                 userRoleRepository.save(userRole);
-            });
+//            });
 
             return null;
         }

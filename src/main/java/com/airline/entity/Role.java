@@ -32,4 +32,10 @@ public class Role {
 
     @OneToMany(mappedBy = "role")
     private List<UserRole> userRoles;
+
+    public Role(int id, String name, String desc) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+    }
 }
