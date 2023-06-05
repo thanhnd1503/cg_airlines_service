@@ -24,6 +24,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "JOIN Role r ON ur.role.id = r.id " +
             "WHERE u.email =:email")
     List<String> findRolesByEmail(@Param("email") String email);
+    @Query("SELECT r.name as Role " +
+            "FROM User u " +
+            "JOIN UserRole ur ON u.id = ur.user.id " +
+            "JOIN Role r ON ur.role.id = r.id " +
+            "WHERE u.userName =:userName")
+    List<String> findRolesByUserName(@Param("userName") String userName);
     Page<User> findAll(Pageable pageable);
     @Modifying
     @Query("UPDATE User u SET u.isStatus = false WHERE u.id = :id")

@@ -20,7 +20,6 @@ public class JwtTokenProvider {
     public String generateToken(Authentication authentication) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .setIssuedAt(new Date())
@@ -30,6 +29,14 @@ public class JwtTokenProvider {
     }
 
     public String getEmailFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+    public String getUserNameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)

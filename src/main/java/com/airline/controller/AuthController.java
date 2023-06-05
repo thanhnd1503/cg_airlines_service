@@ -30,7 +30,7 @@ public class AuthController {
             return new ResponseEntity<>("this Account is not valid", HttpStatus.BAD_REQUEST);
         }
     }
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> create(@Validated @RequestBody UserDtoCreateRequest userDtoCreateRequest) {
         checkEmailPassword checkEmailPassword = userService.save(userDtoCreateRequest);
         if (checkEmailPassword == null) {
