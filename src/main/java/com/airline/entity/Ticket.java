@@ -6,34 +6,40 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Table
+@Table(name="ticket")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
-    private String Customer;
-
-    private String From;
-
-    private String Origin;
-
-    private String Destination;
-
-    private Double price;
-
-    private String Seat;
-
-    private String Date;
-
-    private String Class;
-
-    private String FlightId;
-
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id",nullable = false)
+    private long id;
+    @Column(name = "ticket_number",nullable = false)
+    private String ticketNumber;
+    @Column(name = "flight_number",nullable = false)
+    private String flightNumber;
+    @Column(name = "departure",nullable = false)
+    private String departure;
+    @Column(name = "destination",nullable = false)
+    private String destination;
+    @Column(name = "departure_date",nullable = false)
+    private Date departureDate;
+    @Column(name = "departure_Time",nullable = false)
+    private String departureTime;
+    @Column(name = "ticket_class",nullable = false)
+    private String ticketClass;
+    @Column(name = "seat_number",nullable = false)
+    private String seatNumber;
+    @Column(name = "ticket_price",nullable = false)
+    private Long ticketPrice;
+    @Column(name = "ticket_status",nullable = false)
+    private Boolean ticketStatus;
+    @Column(name = "booking_date",nullable = false)
+    private Date bookingDate;
 
 }
