@@ -23,5 +23,6 @@ public class SearchTicketDtoRequest {
     private Date departureDate;
     @NotNull
     private String ticketClass;
+
     private List<Ticket> listOfTicket;
 }

@@ -36,16 +36,21 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
         User currentUser = userRepository.findUserByAccount(loginRequest.getAccount());
-        UserDtoResponse userDtoResponse = userConverter.entityToDto(currentUser);
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                        userDtoResponse.getUserName(), loginRequest.getPassword()));
+        System.out.println(currentUser);
+        if (currentUser == null) {
+            throw new IllegalArgumentException("User not found");
+        }else {
+            UserDtoResponse userDtoResponse = userConverter.entityToDto(currentUser);
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            userDtoResponse.getUserName(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // Gọi hàm tạo Token
-        String token = tokenProvider.generateToken(authentication);
-        LoginResponse loginResponse = new LoginResponse(userDtoResponse, token);
-        return loginResponse;
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Gọi hàm tạo Token
+            String token = tokenProvider.generateToken(authentication);
+            LoginResponse loginResponse = new LoginResponse(userDtoResponse, token);
+            return loginResponse;
+        }
     }
     @Override
     public Boolean isExistAccount (String account){
