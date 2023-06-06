@@ -7,6 +7,8 @@ import com.airline.entity.Ticket;
 import com.airline.repository.TicketRepository;
 import com.airline.service.SearchTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -20,9 +22,12 @@ public class SearchTicketServiceImpl implements SearchTicketService {
     @Autowired
     TicketRepository repository;
     @Override
-    public List<SearchTicketDtoResponse> getSearchTicketDtoResponses(SearchTicketDtoRequest searchTicketDtoRequest) {
-        List<Ticket> tickets = repository.searchAllByAl(searchTicketDtoRequest.getDeparture(), searchTicketDtoRequest.getDestination(), searchTicketDtoRequest.getDepartureDate(), searchTicketDtoRequest.getTicketClass());
-        List<SearchTicketDtoResponse> searchTicketDtoResponses = ticketConverter.entititesToDtos(tickets);
+    public Page<SearchTicketDtoResponse> getSearchTicketDtoResponses(SearchTicketDtoRequest searchTicketDtoRequest, Pageable pageable) {
+        Page<Ticket> tickets = repository.searchAllByAl(searchTicketDtoRequest.getDeparture(),
+                searchTicketDtoRequest.getDestination(),
+                searchTicketDtoRequest.getDepartureDate(),
+                searchTicketDtoRequest.getTicketClass(),pageable);
+        Page<SearchTicketDtoResponse> searchTicketDtoResponses = ticketConverter.entititesToDtos(tickets,pageable);
         return searchTicketDtoResponses;
     }
 }
