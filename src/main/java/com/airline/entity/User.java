@@ -60,6 +60,6 @@ public class User {
     @Column(name = "remember_token", length = 255, nullable = true)
     private String rememberToken;
 
-//    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
-//    private List<Orders> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<Ticket> tickets = new ArrayList<>();
 }
