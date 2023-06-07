@@ -22,11 +22,11 @@ import java.util.List;
 public class TicketController {
     @Autowired
     private SearchTicketService service;
+
     @PostMapping("/search")
     public ResponseEntity<Page<SearchTicketDtoResponse>> searchTicket(@Validated @RequestBody SearchTicketDtoRequest searchTicketDtoRequest,
                                                                       @RequestParam(defaultValue = "0") int page,
-                                                                      @RequestParam(defaultValue = "10") int size,
-                                                                      @RequestParam(defaultValue = "ticketPrice,asc") String[] sort) {
+                                                                      @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "ticketPrice,asc") String[] sort) {
         Sort.Direction direction = Sort.Direction.ASC; // Mặc định sắp xếp tăng dần
         String sortField = "ticketPrice"; // Mặc định sắp xếp theo trường ticketPrice
 
@@ -37,7 +37,7 @@ public class TicketController {
             }
         }
         Pageable pageable = PageRequest.of(page, size, direction, sortField);
-        Page<SearchTicketDtoResponse> searchTicketDtoResponses = service.getSearchTicketDtoResponses(searchTicketDtoRequest,pageable);
+        Page<SearchTicketDtoResponse> searchTicketDtoResponses = service.getSearchTicketDtoResponses(searchTicketDtoRequest, pageable);
         return new ResponseEntity<>(searchTicketDtoResponses, HttpStatus.OK);
     }
 }

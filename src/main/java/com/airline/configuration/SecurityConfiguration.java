@@ -91,13 +91,13 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests() // links start with /api/
-                .requestMatchers("/api/auth/**","/api/users/**")// perform segregate authorize
+                .requestMatchers( "/api/auth/**","/api/users/**")// perform segregate authorize
                 .permitAll();
 
         // Pages require login with role: ROLE_ADMIN.
         // If not login at admin role yet, redirect to /login
         http.authorizeHttpRequests()
-                .requestMatchers("/api/role/**","/api/**")
+                .requestMatchers("/api/role/**", "/api/users/**")
                 .hasRole("ADMIN");
 
 
