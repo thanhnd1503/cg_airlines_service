@@ -1,4 +1,4 @@
-package com.airline.dto.tiketDto.request;
+package com.airline.dto.searchTiketDto.request;
 
 import com.airline.entity.Ticket;
 import jakarta.validation.constraints.NotNull;

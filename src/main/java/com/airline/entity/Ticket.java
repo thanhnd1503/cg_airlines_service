@@ -41,5 +41,8 @@ public class Ticket {
     private Boolean ticketStatus;
     @Column(name = "booking_date",nullable = false)
     private Date bookingDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 
 }
