@@ -24,5 +24,4 @@ public class SearchTicketDtoRequest {
     @NotNull
     private String ticketClass;
 
-    private List<Ticket> listOfTicket;
 }

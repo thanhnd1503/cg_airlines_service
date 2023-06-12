@@ -24,16 +24,7 @@ public class SearchTicketController {
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size,
                                                                       @RequestParam(defaultValue = "ticketPrice,asc") String[] sort) {
-        Sort.Direction direction = Sort.Direction.ASC; // Mặc định sắp xếp tăng dần
-        String sortField = "ticketPrice"; // Mặc định sắp xếp theo trường ticketPrice
-
-        if (sort.length >= 2) {
-            sortField = sort[0]; // Lấy trường sắp xếp từ phần tử đầu tiên của mảng
-            if ("desc".equalsIgnoreCase(sort[1])) {
-                direction = Sort.Direction.DESC; // Nếu phần tử thứ hai là "desc", sắp xếp giảm dần
-            }
-        }
-        Pageable pageable = PageRequest.of(page, size, direction, sortField);
+        Pageable pageable = service.createPageable(page, size, sort);
         Page<SearchTicketDtoResponse> searchTicketDtoResponses = service.getSearchTicketDtoResponses(searchTicketDtoRequest,pageable);
         return new ResponseEntity<>(searchTicketDtoResponses, HttpStatus.OK);
     }
