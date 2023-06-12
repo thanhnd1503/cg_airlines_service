@@ -19,5 +19,6 @@ public class SearchTicketDtoResponse {
     private String ticketClass;
 
     private Long ticketPrice;
+//    private Integer numberOfTickets;
 
 }

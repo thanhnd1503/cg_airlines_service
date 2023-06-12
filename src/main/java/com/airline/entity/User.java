@@ -62,4 +62,6 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Ticket> tickets = new ArrayList<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<Passenger> passengers = new ArrayList<>();
 }

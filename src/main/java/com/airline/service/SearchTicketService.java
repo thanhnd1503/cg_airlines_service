@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface SearchTicketService {
     Page<SearchTicketDtoResponse> getSearchTicketDtoResponses(SearchTicketDtoRequest searchTicketDtoRequest, Pageable pageable);
+    Pageable createPageable(int page, int size, String[] sort);
 }
