@@ -1,6 +1,6 @@
 -- auto-generated definition
 create schema airline_test collate utf8mb4_0900_ai_ci;
-create database airline_test;
+create database airline_test ;
 use airline_test;
 drop database airline_test;
 create table `user`(

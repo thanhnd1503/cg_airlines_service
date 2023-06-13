@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class SearchTicketController {
     @Autowired
     private SearchTicketService service;
+
     @PostMapping("/search")
     public ResponseEntity<Page<SearchTicketDtoResponse>> searchTicket(@Validated @RequestBody SearchTicketDtoRequest searchTicketDtoRequest,
                                                                       @RequestParam(defaultValue = "0") int page,
                                                                       @RequestParam(defaultValue = "10") int size,
                                                                       @RequestParam(defaultValue = "ticketPrice,asc") String[] sort) {
         Pageable pageable = service.createPageable(page, size, sort);
-        Page<SearchTicketDtoResponse> searchTicketDtoResponses = service.getSearchTicketDtoResponses(searchTicketDtoRequest,pageable);
+        Page<SearchTicketDtoResponse> searchTicketDtoResponses = service.getSearchTicketDtoResponses(searchTicketDtoRequest, pageable);
         return new ResponseEntity<>(searchTicketDtoResponses, HttpStatus.OK);
     }
 }
