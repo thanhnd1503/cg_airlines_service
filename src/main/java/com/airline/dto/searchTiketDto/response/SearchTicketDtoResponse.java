@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchTicketDtoResponse {
+    private String ticketNumber;
     private String departure;
 
     private String destination;
