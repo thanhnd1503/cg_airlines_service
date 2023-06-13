@@ -27,6 +27,9 @@ public class OrderTicket {
     private List<Luggage> luggages = new ArrayList<>();
     @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
     private List<Ticket> tickets = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
     @Column(name = "total_price")
     private Double totalPrice;
     @Column(name = "is_status")
