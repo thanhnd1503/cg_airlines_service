@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TicketService {
-    List<Ticket> findALlTicketPage(String name, Pageable pageable);
 
-    TicketDtoRes getTicketDtoResById(Long id);
+    TicketDtoRes getTicketDtoResByTicketNumber(String ticketNumber);
 }

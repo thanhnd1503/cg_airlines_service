@@ -21,14 +21,10 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     TicketConverter ticketConverter;
 
-    @Override
-    public List<Ticket> findALlTicketPage(String name, Pageable pageable) {
-        return null;
-    }
 
     @Override
-    public TicketDtoRes getTicketDtoResById(Long id) {
-        Ticket ticket = ticketRepository.getTicketById(id);
+    public TicketDtoRes getTicketDtoResByTicketNumber(String ticketNumber) {
+        Ticket ticket = ticketRepository.getTicketByTicketNumber(ticketNumber);
         TicketDtoRes res = ticketConverter.entityToDto(ticket);
         return res;
     }

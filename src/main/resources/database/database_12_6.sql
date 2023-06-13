@@ -1,12 +1,3 @@
-create table order_ticket
-(
-    id          bigint auto_increment
-        primary key,
-    expire_date date   null,
-    is_status   bit    null,
-    total_price double null
-);
-
 create table role
 (
     id     bigint auto_increment
@@ -31,6 +22,18 @@ create table user
     check ((`is_status` = 0) or (`is_status` = 1))
 );
 
+create table order_ticket
+(
+    id          bigint auto_increment
+        primary key,
+    expire_date date   null,
+    is_status   bit    null,
+    total_price double null,
+    user_id     bigint null,
+    constraint FK6c9f39b86t3unij3eyhxvv2my
+        foreign key (user_id) references user (id)
+);
+
 create table passenger
 (
     id         bigint auto_increment
@@ -39,9 +42,9 @@ create table passenger
     last_name  varchar(255) not null,
     oder_id    bigint       null,
     user_id    bigint       null,
-    constraint
+    constraint FKmk0iuq3k712q80qqjehqdndoa
         foreign key (user_id) references user (id),
-    constraint
+    constraint FKqoeg34hex9fabc3su17b20336
         foreign key (oder_id) references order_ticket (id)
 );
 
@@ -53,9 +56,9 @@ create table luggage
     price        double not null,
     order_id     bigint null,
     passenger_id bigint null,
-    constraint
+    constraint FK9cy6pmixgdxluao8vc6x6idnj
         foreign key (passenger_id) references passenger (id),
-    constraint
+    constraint FKsf9d5wbkerdt8iu67g3vdogjt
         foreign key (order_id) references order_ticket (id)
 );
 
@@ -76,9 +79,9 @@ create table ticket
     booking_date   date         not null,
     user_id        bigint       null,
     order_id       bigint       null,
-    constraint
+    constraint FK5ni0ffk6ohhlk5wqmidoh065f
         foreign key (order_id) references order_ticket (id),
-    constraint
+    constraint fk_user_id
         foreign key (user_id) references user (id)
 );
 
@@ -88,12 +91,11 @@ create table user_role
         primary key,
     user_id bigint not null,
     role_id bigint not null,
-    constraint
+    constraint FK859n2jvi8ivhui0rl0esws6o
         foreign key (user_id) references user (id),
-    constraint
+    constraint fk_user_role_role
         foreign key (role_id) references role (id)
 );
-
 INSERT INTO `user` (full_name, username, `password`, email, is_status)
 values
     ('Thành','vip','$2a$12$gk/atUhj2BZWJFmZVJwlCONujBaGj60i0GCeo5DmwMv/FhlVwEicO','thanh@codegym.com',1),
@@ -101,16 +103,9 @@ values
 INSERT INTO `role`(`name`,`desc`) values
                                       ('ROLE_ADMIN','Quản trị viên'),
                                       ('ROLE_CUSTOMER','Khách hàng');
-<<<<<<< HEAD
-INSERT INTO `ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
-=======
-INSERT INTO `luggage`(`kilogam`,`price`) values
-                                      (1*20,10);
-
 INSERT INTO `airline_test`.`ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
->>>>>>> 3db6c8166e91d1aff39f71bcf47d751415313f99
-VALUES ('123', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '56', '0', '2023-06-07',null);
-INSERT INTO `ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
-VALUES ('123', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '30', '0', '2023-06-07',null);
-INSERT INTO `ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
-VALUES ('123', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '20', '0', '2023-06-07',null);
+VALUES ('1', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '56', '0', '2023-06-07',null);
+INSERT INTO `airline_test`.`ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
+VALUES ('2', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '30', '0', '2023-06-07',null);
+INSERT INTO `airline_test`.`ticket` (`ticket_number`, `flight_number`, `departure`, `destination`, `departure_date`, `departure_time`, `ticket_class`, `seat_number`, `ticket_price`, `ticket_status`, `booking_date`,`user_id`)
+VALUES ('3', 'abc', 'HN', 'HCM', '2023-06-07', '1h', 'thương gia', 'zxc', '20', '0', '2023-06-07',null);

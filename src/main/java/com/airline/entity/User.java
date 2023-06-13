@@ -64,4 +64,6 @@ public class User {
     private List<Ticket> tickets = new ArrayList<>();
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Passenger> passengers = new ArrayList<>();
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<OrderTicket> bookingTickets = new ArrayList<>();
 }
