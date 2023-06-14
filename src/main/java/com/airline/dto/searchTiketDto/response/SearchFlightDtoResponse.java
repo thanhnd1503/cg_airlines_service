@@ -15,5 +15,7 @@ public class SearchFlightDtoResponse {
     private String destination;
 
     private String departureTime;
-
+    private Integer quantityFirst;
+    private Integer quantitySecond;
+    private String flightNumber;
 }

@@ -28,6 +28,8 @@ public class Passenger {
     private String lastName;
     @Column(name = "is_luggage",nullable = true)
     private Boolean isLuggage = false;
+    @Column(name = "gender",nullable = true)
+    private String gender;
     @ManyToOne
     @JoinColumn(name = "oder_id",referencedColumnName = "id")
     @JsonBackReference

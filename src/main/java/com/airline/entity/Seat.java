@@ -23,8 +23,7 @@ public class Seat {
     @Column(name = "seat_class",nullable = false)
     private String seatClass;
 
-    @Column(name = "quantity",nullable = false)
-    private Integer quantity;
+
     @Column(name = "seat_status",nullable = false)
     private Boolean seatStatus;
 

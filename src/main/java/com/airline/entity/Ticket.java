@@ -22,7 +22,6 @@ public class Ticket {
     private Long id;
     @Column(name = "ticket_number",nullable = false)
     private String ticketNumber;
-
     @ManyToOne
     @JoinColumn(name = "flight_id",referencedColumnName = "id")
     @JsonBackReference

@@ -1,3 +1,5 @@
+create database airline_test;
+use airline_test;
 create table flight
 (
     id             bigint auto_increment
@@ -5,7 +7,10 @@ create table flight
     departure      varchar(255) not null,
     departure_date date         not null,
     departure_time varchar(255) not null,
-    destination    varchar(255) not null
+    destination    varchar(255) not null,
+    flight_number  varchar(255) not null,
+    quantity_first       int        null,
+    quantity_second       int        null
 );
 
 create table role
@@ -20,7 +25,6 @@ create table seat
 (
     id          bigint auto_increment
         primary key,
-    quantity    int          not null,
     seat_class  varchar(255) not null,
     seat_number varchar(255) not null,
     seat_status bit          not null,
@@ -101,8 +105,8 @@ create table user_role
     constraint FKa68196081fvovjhkek5m97n3y
         foreign key (role_id) references role (id)
 );
-INSERT INTO `airline_test`.`user_role` (`role_id`, `user_id`) VALUES ('1', '1');
-INSERT INTO `airline_test`.`user_role` (`role_id`, `user_id`) VALUES ('2', '2');
+
+
 INSERT INTO `user` (full_name, username, `password`, email, is_status)
 values
     ('Thành','vip','$2a$12$gk/atUhj2BZWJFmZVJwlCONujBaGj60i0GCeo5DmwMv/FhlVwEicO','thanh@codegym.com',1),
@@ -110,25 +114,60 @@ values
 INSERT INTO `role`(`name`,`desc`) values
                                       ('ROLE_ADMIN','Quản trị viên'),
                                       ('ROLE_CUSTOMER','Khách hàng');
-INSERT INTO flight (departure, departure_date, departure_time, destination)
+INSERT INTO `airline_test`.`user_role` (`role_id`, `user_id`) VALUES ('1', '1');
+INSERT INTO `airline_test`.`user_role` (`role_id`, `user_id`) VALUES ('2', '2');
+INSERT INTO flight (departure, departure_date, departure_time, destination,quantity_first,quantity_second,flight_number)
 VALUES
-    ('Hà Nội', '2023-06-14', '08:00', 'Hồ Chí Minh'),
-    ('Hà Nội', '2023-06-15', '09:30', 'Hồ Chí Minh'),
-    ('Hà Nội', '2023-06-16', '10:45', 'Hồ Chí Minh'),
-    ('Hà Nội', '2023-06-17', '11:15', 'Hồ Chí Minh'),
-    ('Bình Định', '2023-06-18', '12:30', 'Hồ Chí Minh'),
-    ('Bình Định', '2023-06-19', '13:45', 'Hồ Chí Minh'),
-    ('Bình Định', '2023-06-20', '14:00', 'Hồ Chí Minh'),
-    ('Hồ Chí Minh', '2023-06-21', '15:15', 'Hà Nội'),
-    ('Hồ Chí Minh', '2023-06-22', '16:30', 'Hà Nội'),
-    ('Hồ Chí Minh', '2023-06-23', '17:45', 'Hà Nội'),
-    ('Hà Nội', '2023-06-24', '18:00', 'Bình Định'),
-    ('Hà Nội', '2023-06-25', '19:15', 'Bình Định'),
-    ('Hà Nội', '2023-06-26', '20:30', 'Bình Định'),
-    ('Cần Đước', '2023-06-27', '21:45', 'Bình Định'),
-    ('Cần Đước', '2023-06-28', '22:00', 'Bình Định'),
-    ('Cần Đước', '2023-06-29', '23:15', 'Bình Định'),
-    ('An Giang', '2023-06-30', '00:30', 'Hồ Chí Minh'),
-    ('An Giang', '2023-07-01', '01:45', 'Hồ Chí Minh'),
-    ('An Giang', '2023-07-02', '02:00', 'Hồ Chí Minh'),
-    ('An Giang', '2023-07-03', '03:15', 'Hồ Chí Minh');
+    ('Hà Nội', '2023-06-14', '08:00', 'Hồ Chí Minh',5,10,'ABC123'),
+    ('Hà Nội', '2023-06-14', '09:30', 'Hồ Chí Minh',5,10,'DEF456'),
+    ('Hà Nội', '2023-06-14', '10:45', 'Hồ Chí Minh',5,10,'GHI789'),
+    ('Hà Nội', '2023-06-17', '11:15', 'Hồ Chí Minh',5,10,'JKL012'),
+    ('Bình Định', '2023-06-18', '12:30', 'Hồ Chí Minh',5,10,'MNO345'),
+    ('Bình Định', '2023-06-19', '13:45', 'Hồ Chí Minh',5,10,'PQR678'),
+    ('Bình Định', '2023-06-20', '14:00', 'Hồ Chí Minh',5,10,'STU901'),
+    ('Hồ Chí Minh', '2023-06-21', '15:15', 'Hà Nội',5,10,'VWX234'),
+    ('Hồ Chí Minh', '2023-06-22', '16:30', 'Hà Nội',5,10,'YZA567'),
+    ('Hồ Chí Minh', '2023-06-23', '17:45', 'Hà Nội',5,10,'BCD890'),
+    ('Hà Nội', '2023-06-24', '18:00', 'Bình Định',5,10,'EFG123'),
+    ('Hà Nội', '2023-06-25', '19:15', 'Bình Định',5,10,'HIJ456'),
+    ('Hà Nội', '2023-06-26', '20:30', 'Bình Định',5,10,'KLM789'),
+    ('Cần Đước', '2023-06-27', '21:45', 'Bình Định',5,10,'NOP012'),
+    ('Cần Đước', '2023-06-28', '22:00', 'Bình Định',5,10,'QRS345'),
+    ('Cần Đước', '2023-06-29', '23:15', 'Bình Định',5,10,'TUV678'),
+    ('An Giang', '2023-06-30', '00:30', 'Hồ Chí Minh',5,10,'WXY901'),
+    ('An Giang', '2023-07-01', '01:45', 'Hồ Chí Minh',5,10,'ZAB234'),
+    ('An Giang', '2023-07-02', '02:00', 'Hồ Chí Minh',5,10,'CDE567'),
+    ('An Giang', '2023-07-03', '03:15', 'Hồ Chí Minh',5,10,'FGH890');
+
+INSERT INTO seat (seat_class, seat_number, seat_status, flight_id)
+VALUES
+    ('A', 'A1', 1, 1),
+    ('A', 'A2', 1, 1),
+    ('A', 'A3', 1, 1),
+    ('A', 'A4', 1, 1),
+    ('A', 'A5', 1, 1),
+    ('A', 'A1', 1, 2),
+    ('A', 'A2', 1, 2),
+    ('A', 'A3', 1, 2),
+    ('A', 'A4', 1, 2),
+    ('A', 'A5', 1, 2),
+    ('B', 'B1', 1, 1),
+    ('B', 'B2', 1, 1),
+    ('B', 'B3', 1, 1),
+    ('B', 'B4', 1, 1),
+    ('B', 'B5', 1, 1),
+    ('B', 'B6', 1, 1),
+    ('B', 'B7', 1, 1),
+    ('B', 'B8', 1, 1),
+    ('B', 'B9', 1, 1),
+    ('B', 'B10', 1, 1),
+    ('B', 'B1', 1, 2),
+    ('B', 'B2', 1, 2),
+    ('B', 'B3', 1, 2),
+    ('B', 'B4', 1, 2),
+    ('B', 'B5', 1, 2),
+    ('B', 'B6', 1, 2),
+    ('B', 'B7', 1, 2),
+    ('B', 'B8', 1, 2),
+    ('B', 'B9', 1, 2),
+    ('B', 'B0', 1, 2);
