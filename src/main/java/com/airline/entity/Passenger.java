@@ -1,5 +1,6 @@
 package com.airline.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,10 +26,11 @@ public class Passenger {
     private String firstName;
     @Column(name = "last_name",nullable = false)
     private String lastName;
-    @OneToMany(mappedBy = "passenger",fetch = FetchType.LAZY)
-    private List<Luggage> luggages = new ArrayList<>();
+    @Column(name = "is_luggage",nullable = true)
+    private Boolean isLuggage = false;
     @ManyToOne
     @JoinColumn(name = "oder_id",referencedColumnName = "id")
+    @JsonBackReference
     private OrderTicket orders;
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")

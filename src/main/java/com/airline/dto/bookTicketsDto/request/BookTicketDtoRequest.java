@@ -1,9 +1,7 @@
 package com.airline.dto.bookTicketsDto.request;
 
-import com.airline.entity.Luggage;
 import com.airline.entity.Passenger;
 import com.airline.entity.Ticket;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,8 +19,6 @@ import java.util.List;
 public class BookTicketDtoRequest {
     @NotEmpty
     List<Ticket> tickets;
-    @NotEmpty
-    List<Luggage> luggages;
     @NotEmpty
     List<Passenger> passengers;
     @NotNull
