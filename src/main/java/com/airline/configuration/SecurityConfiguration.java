@@ -87,18 +87,20 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/**","/api/users/**")// perform segregate authorize
                 .permitAll();
 
-        // Pages require login with role: ROLE_ADMIN.
-        // If not login at admin role yet, redirect to /login
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/role/**","/api/**")
-                .hasRole("ADMIN");
-
-
         // Pages require login with role: ROLE_USER
         // If not login at user role yet, redirect to /login
 //        http.authorizeHttpRequests()
 //                .requestMatchers("/api/users/**")
-//                .hasRole("CUSTOMER");
+//                .hasAnyRole("CUSTOMER", "ADMIN");
+
+
+
+        // Pages require login with role: ROLE_ADMIN.
+        // If not login at admin role yet, redirect to /login
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/role/**")
+                .hasRole("ADMIN");
+
 
         http.exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
@@ -110,7 +112,7 @@ public class SecurityConfiguration {
         // When user login with ROLE_USER, but try to
         // access pages require ROLE_ADMIN, redirect to /error-403
         http.authorizeHttpRequests().and().exceptionHandling()
-                .accessDeniedPage("/access-denied");
+                .accessDeniedPage("/api/auth/access-denied");
 
         // Configure remember me (save token in database)
         http.authorizeHttpRequests()

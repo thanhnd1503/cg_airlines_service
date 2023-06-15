@@ -1,16 +1,14 @@
-create database airline_test;
-use airline_test;
 create table flight
 (
-    id             bigint auto_increment
+    id              bigint auto_increment
         primary key,
-    departure      varchar(255) not null,
-    departure_date date         not null,
-    departure_time varchar(255) not null,
-    destination    varchar(255) not null,
-    flight_number  varchar(255) not null,
-    quantity_first       int        null,
-    quantity_second       int        null
+    departure       varchar(255) not null,
+    departure_date  date         not null,
+    departure_time  varchar(255) not null,
+    destination     varchar(255) not null,
+    flight_number   varchar(255) not null,
+    quantity_first  int          null,
+    quantity_second int          null
 );
 
 create table role
@@ -65,8 +63,8 @@ create table passenger
     id         bigint auto_increment
         primary key,
     first_name varchar(255) not null,
-    is_luggage bit          not null,
-    gender bit  null ,
+    gender     bit          null,
+    is_luggage bit          null,
     last_name  varchar(255) not null,
     user_id    bigint       null,
     constraint FKmk0iuq3k712q80qqjehqdndoa
@@ -103,7 +101,6 @@ create table user_role
     constraint FKa68196081fvovjhkek5m97n3y
         foreign key (role_id) references role (id)
 );
-
 
 INSERT INTO `user` (full_name, username, `password`, email, is_status)
 values

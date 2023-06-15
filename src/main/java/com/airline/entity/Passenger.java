@@ -29,11 +29,7 @@ public class Passenger {
     @Column(name = "is_luggage",nullable = true)
     private Boolean isLuggage = false;
     @Column(name = "gender",nullable = true)
-    private String gender;
-    @ManyToOne
-    @JoinColumn(name = "oder_id",referencedColumnName = "id")
-    @JsonBackReference
-    private OrderTicket orders;
+    private Boolean gender;
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;

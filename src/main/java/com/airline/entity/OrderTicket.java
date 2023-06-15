@@ -22,9 +22,6 @@ public class OrderTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
     private Long id;
-    @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Passenger> passengers = new ArrayList<>();
 
     @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
     @JsonManagedReference

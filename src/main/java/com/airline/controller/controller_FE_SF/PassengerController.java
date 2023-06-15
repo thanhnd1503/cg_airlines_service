@@ -11,18 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/thanh")
+@RequestMapping("/api/users")
 public class PassengerController {
     @Autowired
     PassengerService service;
     @Autowired
     private SecurityService securityService;
     @PostMapping("/passenger")
-    public ResponseEntity<?> SavePass(@RequestBody PassengerDtoRequest passengerDtoRequest,
-                                        @RequestHeader("Authorization") String authToken){
-        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<?> SavePass(@RequestBody PassengerDtoRequest passengerDtoRequest){
+//        if (!securityService.isAuthenticated()) {
+//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+//        }
         service.save(passengerDtoRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
