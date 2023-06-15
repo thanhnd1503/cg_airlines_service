@@ -9,18 +9,15 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SearchTicketDtoResponse {
-    private String ticketNumber;
 
+
+public class SearchFlightDtoResponse {
     private String departure;
 
     private String destination;
 
     private String departureTime;
-
-    private String ticketClass;
-
-    private Long ticketPrice;
-//    private Integer numberOfTickets;
-
+    private Integer quantityFirst;
+    private Integer quantitySecond;
+    private String flightNumber;
 }
