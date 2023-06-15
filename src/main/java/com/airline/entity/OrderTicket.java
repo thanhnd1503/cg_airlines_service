@@ -1,5 +1,6 @@
 package com.airline.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +22,9 @@ public class OrderTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
     private Long id;
+
     @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
-    private List<Passenger> passengers = new ArrayList<>();
-    @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
-    private List<Luggage> luggages = new ArrayList<>();
-    @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Ticket> tickets = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
