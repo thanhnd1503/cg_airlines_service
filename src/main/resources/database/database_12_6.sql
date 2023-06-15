@@ -30,7 +30,7 @@ create table order_ticket
     is_status   bit    null,
     total_price double null,
     user_id     bigint null,
-    constraint FK6c9f39b86t3unij3eyhxvv2my
+    constraint
         foreign key (user_id) references user (id)
 );
 
@@ -42,9 +42,9 @@ create table passenger
     last_name  varchar(255) not null,
     oder_id    bigint       null,
     user_id    bigint       null,
-    constraint FKmk0iuq3k712q80qqjehqdndoa
+    constraint
         foreign key (user_id) references user (id),
-    constraint FKqoeg34hex9fabc3su17b20336
+    constraint
         foreign key (oder_id) references order_ticket (id)
 );
 
@@ -56,7 +56,7 @@ create table luggage
     price        double not null,
     order_id     bigint null,
     passenger_id bigint null,
-    constraint FK9cy6pmixgdxluao8vc6x6idnj
+    constraint
         foreign key (passenger_id) references passenger (id),
     constraint FKsf9d5wbkerdt8iu67g3vdogjt
         foreign key (order_id) references order_ticket (id)
@@ -79,7 +79,7 @@ create table ticket
     booking_date   date         not null,
     user_id        bigint       null,
     order_id       bigint       null,
-    constraint FK5ni0ffk6ohhlk5wqmidoh065f
+    constraint
         foreign key (order_id) references order_ticket (id),
     constraint fk_user_id
         foreign key (user_id) references user (id)
@@ -91,7 +91,7 @@ create table user_role
         primary key,
     user_id bigint not null,
     role_id bigint not null,
-    constraint FK859n2jvi8ivhui0rl0esws6o
+    constraint
         foreign key (user_id) references user (id),
     constraint fk_user_role_role
         foreign key (role_id) references role (id)
