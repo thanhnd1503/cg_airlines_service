@@ -88,11 +88,11 @@ public class UserServiceImpl implements UserService {
             newUser.setPassword(hashedPassword);
 
             userRepository.save(newUser);
-//            userDtoCreateRequest.getRoles().forEach(role -> {
+
                 Role role = new Role(2,"ROLE_CUSTOMER","khách hàng");
                 UserRole userRole = new UserRole(newUser, role);
                 userRoleRepository.save(userRole);
-//            });
+
 
             return null;
         }
@@ -133,5 +133,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updateRemoveRole(Long userId, Role role) {
         return null;
+    }
+
+    @Override
+    public List<String> getRoleByUserName(String userName) {
+            List<String> roles = userRepository.findRolesByUserName(userName);
+        return roles;
     }
 }

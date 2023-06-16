@@ -19,18 +19,6 @@ create table role
     name   varchar(50)  not null
 );
 
-create table seat
-(
-    id          bigint auto_increment
-        primary key,
-    seat_class  varchar(255) not null,
-    seat_number varchar(255) not null,
-    seat_status bit          not null,
-    flight_id   bigint       null,
-    constraint FKeda0njvaxhowgf6120eh6hxpq
-        foreign key (flight_id) references flight (id)
-);
-
 create table user
 (
     id             bigint auto_increment
@@ -53,9 +41,12 @@ create table order_ticket
     expire_date date   null,
     is_status   bit    null,
     total_price double null,
+    flight_id   bigint null,
     user_id     bigint null,
     constraint FK6c9f39b86t3unij3eyhxvv2my
-        foreign key (user_id) references user (id)
+        foreign key (user_id) references user (id),
+    constraint FKmr1fj6vk1g7e5xoa94dif3qft
+        foreign key (flight_id) references flight (id)
 );
 
 create table passenger
@@ -66,9 +57,27 @@ create table passenger
     gender     bit          null,
     is_luggage bit          null,
     last_name  varchar(255) not null,
+    order_id   bigint       null,
     user_id    bigint       null,
+    constraint FKd8a8x61580mofpqierlvqcjh4
+        foreign key (order_id) references order_ticket (id),
     constraint FKmk0iuq3k712q80qqjehqdndoa
         foreign key (user_id) references user (id)
+);
+
+create table seat
+(
+    id          bigint auto_increment
+        primary key,
+    seat_class  varchar(255) not null,
+    seat_number varchar(255) not null,
+    seat_status bit          not null,
+    flight_id   bigint       null,
+    order_id    bigint       null,
+    constraint FKeda0njvaxhowgf6120eh6hxpq
+        foreign key (flight_id) references flight (id),
+    constraint FKr0aukd8pbqka26lgak50hdk73
+        foreign key (order_id) references order_ticket (id)
 );
 
 create table ticket
@@ -101,6 +110,8 @@ create table user_role
     constraint FKa68196081fvovjhkek5m97n3y
         foreign key (role_id) references role (id)
 );
+
+
 
 INSERT INTO `user` (full_name, username, `password`, email, is_status)
 values

@@ -19,6 +19,12 @@ public class SearchFlightConverter {
 
         return flightDtoResponse;
     }
+    public Flight dtoToEntity(SearchFlightDtoResponse searchFlightDtoResponse){
+        Flight flight = new Flight();
+        BeanUtils.copyProperties(searchFlightDtoResponse, flight);
+
+        return flight;
+    }
     public Page<SearchFlightDtoResponse> entititesToDtos(Page<Flight> flights, Pageable pageable){
         List<SearchFlightDtoResponse> searchFlightDtoRespons = new ArrayList<>();
         for(Flight element : flights){

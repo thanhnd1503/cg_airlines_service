@@ -15,9 +15,9 @@ public class OrderTicketConverter {
         BeanUtils.copyProperties(bookTicketDtoRequest, orderTicket);
         return orderTicket;
     }
-    public BookTicketDtoResponse entityToDto(BookTicketDtoRequest bookTicketDtoRequest){
+    public BookTicketDtoResponse entityToDto(OrderTicket orderTicket){
         BookTicketDtoResponse bookTicketDtoResponse = new BookTicketDtoResponse();
-        BeanUtils.copyProperties(bookTicketDtoRequest,bookTicketDtoResponse);
+        BeanUtils.copyProperties(orderTicket,bookTicketDtoResponse);
         return bookTicketDtoResponse;
     }
 }

@@ -33,4 +33,7 @@ public class Passenger {
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private OrderTicket orders;
 }
