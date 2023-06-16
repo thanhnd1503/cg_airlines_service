@@ -21,6 +21,12 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private AuthService authService;
+
+    @GetMapping("/access-denied")
+    public ResponseEntity<?> getAccessDenied(){
+        return new ResponseEntity<>("ádfgjahk", HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
@@ -47,3 +53,60 @@ public class AuthController {
         }
     }
 }
+//package com.airline.controller;
+//
+//
+//import com.airline.payload.request.LoginRequest;
+//import com.airline.payload.response.LoginResponse;
+//import com.airline.security.JwtTokenProvider;
+//import jakarta.validation.Valid;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.web.bind.annotation.*;
+//
+//
+//
+//@CrossOrigin(value = "*", maxAge = 3600)
+//@RestController
+//@RequestMapping("/api/auth")
+//public class AuthController {
+//
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+//
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    JwtTokenProvider tokenProvider;
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+//        try {
+//            // Gọi hàm authenticate để xác thực thông tin đăng nhập
+//            Authentication authentication = authenticationManager
+//                    .authenticate(new UsernamePasswordAuthenticationToken(
+//                            loginRequest.getAccount(), loginRequest.getPassword()));
+//
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//            // Gọi hàm tạo Token
+//            String token = tokenProvider.generateToken(authentication);
+//            return new ResponseEntity<>(new LoginResponse("Đăng nhập thành công!", token), HttpStatus.OK);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(new LoginResponse("Đăng nhập thất bại!", null), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+//
+//    @GetMapping("/access-denied")
+//    public ResponseEntity<?> getAccessDenied() {
+//        return new ResponseEntity<>("Không có quyền truy cập!", HttpStatus.FORBIDDEN);
+//    }
+//}

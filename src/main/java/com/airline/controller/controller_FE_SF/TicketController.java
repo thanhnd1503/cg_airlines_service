@@ -18,8 +18,8 @@ public class TicketController {
     @Autowired
     TicketService ticketService;
     @GetMapping("/{id}")
-    public ResponseEntity<?> getService(@PathVariable("id") Long id) {
-       TicketDtoRes res = ticketService.getTicketDtoResById(id);
+    public ResponseEntity<?> getService(@PathVariable("id") String id) {
+       TicketDtoRes res = ticketService.getTicketDtoResByTicketNumber(id);
         if (res==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(res);
     }
