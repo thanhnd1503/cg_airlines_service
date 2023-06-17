@@ -25,11 +25,10 @@ import java.util.List;
 @NoArgsConstructor
 public class BookTicketDtoRequest {
 //    @NotNull
-    private SearchFlightDtoResponse searchFlightDtoResponse;
+    //private SearchFlightDtoResponse searchFlightDtoResponse;
+    private String flightNumber;
 //    @NotEmpty
     private List<PassengerDtoDetail> passengers = new ArrayList<>();
 //    @NotEmpty
     private List<SeatDtoDetail> seatDtoDetails = new ArrayList<>();
-//    @NotNull
-    private UserDtoRequestDetail userDtoRequestDetail;
 }

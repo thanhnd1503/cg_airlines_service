@@ -3,6 +3,8 @@ package com.airline.service.impl;
 import com.airline.converter.*;
 import com.airline.dto.bookTicketsDto.request.BookTicketDtoRequest;
 import com.airline.dto.bookTicketsDto.response.BookTicketDtoResponse;
+import com.airline.dto.flightDto.request.FlightDtoDetail;
+import com.airline.dto.searchTiketDto.response.SearchFlightDtoResponse;
 import com.airline.dto.seatDto.request.SeatDtoDetail;
 import com.airline.dto.userDto.request.UserDtoRequestDetail;
 import com.airline.entity.*;
@@ -10,6 +12,7 @@ import com.airline.repository.*;
 import com.airline.service.BookTicketService;
 import com.airline.service.PassengerService;
 //import com.airline.service.SeatService;
+import com.airline.service.TicketService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,93 +46,105 @@ public class BookTicketServiceImpl implements BookTicketService {
     OrderTicketConverter bookTicketConverter;
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     TicketRepository ticketRepository;
+    @Autowired
+    TicketService ticketService;
     @Override
-    public void save(BookTicketDtoRequest bookTicketDtoRequest) {
-        //Get user information
-        UserDtoRequestDetail userDtoRequestDetail = bookTicketDtoRequest.getUserDtoRequestDetail();
-        String email = userDtoRequestDetail.getEmail();
-        User user = userRepository.findUserByEmail(email);
-        //Convert
-        OrderTicket orderTicket = bookTicketConverter.dtoToEntity(bookTicketDtoRequest);
-        List<Passenger> passengers = passengerConverter.dtosToEntities(bookTicketDtoRequest.getPassengers());
-        List<SeatDtoDetail> seatsDtoDetails = bookTicketDtoRequest.getSeatDtoDetails();
-        //Get Flight from request
-        String flightNumber = bookTicketDtoRequest.getSearchFlightDtoResponse().getFlightNumber();
-        Flight flightApterOrder = flightRepository.findByFlightNumber(flightNumber);
-        int quantityFirst = flightApterOrder.getQuantityFirst();
-        int quantitySecond = flightApterOrder.getQuantitySecond();
+    public Long save(BookTicketDtoRequest bookTicketDtoRequest,Long userId) {
+        User user = userRepository.getUserById(userId);
+        Flight flight = flightRepository.findByFlightNumber(bookTicketDtoRequest.getFlightNumber());
+       OrderTicket orderTicket = bookTicketConverter.dtoToEntity(bookTicketDtoRequest);
+        orderTicket.setExpireDate(Date.valueOf(LocalDate.now().plusDays(1)));
+        orderTicket.setIs_status(false);
+        orderTicket.setFlight(flight);
+        orderTicket.setUser(user);
+       bookTicketRepository.save(orderTicket);
+       List<Passenger> passengers = passengerConverter.dtosToEntities(bookTicketDtoRequest.getPassengers());
+       List<SeatDtoDetail> seatsDtoDetails = bookTicketDtoRequest.getSeatDtoDetails();
+       //Get flight
+        int quantityFirst = flight.getQuantityFirst();
+        int quantitySecond = flight.getQuantitySecond();
         //Create List ticket
         List<Ticket> tickets = new ArrayList<>();
         //Save passenger
         for (Passenger passenger: passengers) {
             passenger.setUser(user);
+            passenger.setOrders(orderTicket);
             passengerRepository.save(passenger);
         }
-        //Update Flight and Seat;
+        //Update Flight and Seat
         for (SeatDtoDetail seatDetail: seatsDtoDetails
-             ) {
+        ) {
             if (seatDetail.getSeatClass().equals("A")){
                 int seatNumberA = (int) (Math.random() * 5) + 1;
                 String seatR = "A" + seatNumberA;
-                Seat seat = seatRepository.findFlightAndSeatClass(flightApterOrder,seatR);
-                seat.setSeatStatus(false);
-                seatRepository.save(seat);
+                Long seatId = seatRepository.findByFlightAndSeatNumber(flight.getId(),seatR);
+                Optional<Seat> seat = seatRepository.findById(seatId);
+                seat.get().setSeatStatus(false);
+                seat.get().setOrders(orderTicket);
+                seatRepository.save(seat.get());
                 //Update flight
-                flightApterOrder.setQuantityFirst(quantityFirst-1);
-                flightRepository.save(flightApterOrder);
+                flight.setQuantityFirst(quantityFirst-1);
+                flightRepository.save(flight);
                 //Create Ticket
-                Ticket ticket = new Ticket();
-                ticket.setBookingDate(Date.valueOf(LocalDate.now()));
-                ticket.setTicketNumber(flightApterOrder.getFlightNumber() + ticket.getId());
-                ticket.setTicketPrice(2000L);
-                ticket.setTicketStatus(true);
-                ticket.setFlight(flightApterOrder);
-                ticket.setOrders(orderTicket);
-                ticket.setUser(user);
+                Ticket ticket = ticketService.generateTicket(Date.valueOf(LocalDate.now()),
+                        flight.getFlightNumber() + seat.get().getSeatNumber(),
+                        2000L,
+                        true,
+                        flight,
+                        orderTicket,
+                        user
+                        );
                 tickets.add(ticket);
-
                 ticketRepository.save(ticket);
             }else {
                 int seatNumberB = (int) (Math.random() * 10) + 1;
                 String seatR = "B" + seatNumberB;
-                Seat seat = seatRepository.findFlightAndSeatClass(flightApterOrder,seatR);
-                seat.setSeatStatus(false);
-                seatRepository.save(seat);
-                flightApterOrder.setQuantityFirst(quantitySecond-1);
-                flightRepository.save(flightApterOrder);
+                Long seatId = seatRepository.findByFlightAndSeatNumber(flight.getId(),seatR);
+                Optional<Seat> seat = seatRepository.findById(seatId);
+                seat.get().setSeatStatus(false);
+                seat.get().setOrders(orderTicket);
+                seatRepository.save(seat.get());
+                //Update flight
+                flight.setQuantitySecond((quantitySecond-1));
+                flightRepository.save(flight);
                 //Create Ticket
-                Ticket ticket = new Ticket();
-                ticket.setBookingDate(Date.valueOf(LocalDate.now()));
-                ticket.setTicketNumber(flightApterOrder.getFlightNumber() + ticket.getId());
-                ticket.setTicketPrice(1000L);
-                ticket.setTicketStatus(true);
-                ticket.setFlight(flightApterOrder);
-                ticket.setOrders(orderTicket);
-                ticket.setUser(user);
+                Ticket ticket = ticketService.generateTicket(Date.valueOf(LocalDate.now()),
+                        flight.getFlightNumber() + seat.get().getSeatNumber(),
+                        1000L,
+                        true,
+                        flight,
+                        orderTicket,
+                        user
+                );
                 tickets.add(ticket);
                 ticketRepository.save(ticket);
             }
         }
-
-//        Save Order
-        orderTicket.setExpireDate(Date.valueOf(LocalDate.now().plusDays(1)));
-        orderTicket.setIs_status(false);
-        double price =0;
+        //Save Order
+        double price = 0;
         for (Ticket ticket: tickets
-             ) {
+        ) {
+            for (Passenger passenger: passengers
+                 ) {
+                if (passenger.getIsLuggage()){
+                    price += 20;
+                }
+            }
             price += ticket.getTicketPrice();
         }
-        orderTicket.setTotalPrice(price);
-        orderTicket.setFlight(flightApterOrder);
-        orderTicket.setUser(user);
+        OrderTicket newOrderTicket = bookTicketRepository.findById(orderTicket.getId()).get();
+        newOrderTicket.setTotalPrice(price);
+        bookTicketRepository.save(newOrderTicket);
+        return orderTicket.getId();
     }
 
     @Override
-    public BookTicketDtoResponse getOrderTicket(BookTicketDtoRequest bookTicketDtoRequest) {
-        OrderTicket orderTicket = bookTicketConverter.dtoToEntity(bookTicketDtoRequest);
-        BookTicketDtoResponse ticketDtoResponse = bookTicketConverter.entityToDto(orderTicket);
+    public BookTicketDtoResponse getOrderTicket(Long orderTicketId) {
+        OrderTicket oderRes = bookTicketRepository.findById(orderTicketId).get();
+        BookTicketDtoResponse ticketDtoResponse = bookTicketConverter.entityToDto(oderRes);
         return ticketDtoResponse;
     }
 

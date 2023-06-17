@@ -79,20 +79,9 @@ public class SecurityConfiguration {
                 .disable();
 
         http.authorizeHttpRequests() // links start with /api/
-                .requestMatchers("/api/**", "/api/auth/**")// perform segregate authorize
-                .permitAll();
-
-        // Pages require login with role: ROLE_USER
-        // If not login at user role yet, redirect to /login
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/users/**")
-                .hasAnyRole("CUSTOMER", "ADMIN");
-
-        // Pages require login with role: ROLE_ADMIN.
-        // If not login at admin role yet, redirect to /login
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/role/**")
-                .hasRole("ADMIN");
+                .requestMatchers("/api/**", "/api/auth/**","/api/users/**").permitAll()
+                .requestMatchers("/api/users/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/api/role/**").hasRole("ADMIN");
 
         // Use JwtAuthorizationFilter to check token -> get user info
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

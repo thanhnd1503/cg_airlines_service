@@ -19,18 +19,17 @@ public class BookTicketController {
     BookTicketService bookTicketService;
     @Autowired
     SecurityService securityService;
-    @PostMapping("/book")
-    public ResponseEntity<?> BookTicket(@Valid @RequestBody BookTicketDtoRequest bookTicketDtoRequest){
+    @PostMapping("/{user-id}/book")
+    public ResponseEntity<?> BookTicket(@Valid @RequestBody BookTicketDtoRequest bookTicketDtoRequest,@PathVariable("user-id") Long userId){
         if (!securityService.isAuthenticated()) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }
-        bookTicketService.save(bookTicketDtoRequest);
-        BookTicketDtoResponse bookTicketDtoResponse = bookTicketService.getOrderTicket(bookTicketDtoRequest);
+
+        System.out.println(bookTicketDtoRequest.getSeatDtoDetails().get(0));
+        Long orderId = bookTicketService.save(bookTicketDtoRequest,userId);
+        BookTicketDtoResponse bookTicketDtoResponse = bookTicketService.getOrderTicket(orderId);
         return new ResponseEntity<>(bookTicketDtoResponse, HttpStatus.OK);
     }
-    
-//    @GetMapping
-//    public ResponseEntity<?> getBookTicket() {
-//        bookTicketService.getOrderTicket();
-//    }
+
+
 }
