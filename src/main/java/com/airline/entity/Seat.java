@@ -31,6 +31,8 @@ public class Seat {
     @JoinColumn(name = "flight_id",referencedColumnName = "id")
     @JsonBackReference
     private Flight flight;
-
+    @ManyToOne
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private OrderTicket orders;
 
 }

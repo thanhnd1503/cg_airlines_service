@@ -26,6 +26,7 @@ public class SearchTicketController {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }
+        
         Page<SearchFlightDtoResponse> searchFlightDtoResponses = service.getSearchFlightDtoResponses(searchFlightDtoRequest,pageable);
         return new ResponseEntity<>(searchFlightDtoResponses, HttpStatus.OK);
     }

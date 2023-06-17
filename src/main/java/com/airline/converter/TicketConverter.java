@@ -1,5 +1,6 @@
 package com.airline.converter;
 
+import com.airline.dto.ticketDto.request.TicketDtoReq;
 import com.airline.dto.ticketDto.response.TicketDtoRes;
 import com.airline.entity.Ticket;
 import org.springframework.beans.BeanUtils;
@@ -9,9 +10,9 @@ import java.util.Optional;
 
 @Component
 public class TicketConverter {
-    public TicketDtoRes entityToDto(Ticket ticket){
-        TicketDtoRes ticketDtoRes = new TicketDtoRes();
-        BeanUtils.copyProperties(ticket, ticketDtoRes);
-        return ticketDtoRes;
+    public TicketDtoReq entityToDto(Ticket ticket){
+        TicketDtoReq ticketDtoReq = new TicketDtoReq();
+        BeanUtils.copyProperties(ticket, ticketDtoReq);
+        return ticketDtoReq;
     }
 }

@@ -24,7 +24,7 @@ public class AuthController {
 
     @GetMapping("/access-denied")
     public ResponseEntity<?> getAccessDenied(){
-        return new ResponseEntity<>("ádfgjahk", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Access denied!", HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/login")
@@ -52,6 +52,7 @@ public class AuthController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
+   
 }
 //package com.airline.controller;
 //

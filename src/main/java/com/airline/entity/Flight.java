@@ -39,4 +39,7 @@ public class Flight {
     private Integer quantityFirst;
     @Column(name = "quantity_second",nullable = true)
     private Integer quantitySecond;
+    @OneToMany(mappedBy = "flight",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<OrderTicket> orderTickets = new ArrayList<>();
 }

@@ -25,15 +25,19 @@ public class PassengerServiceImpl implements PassengerService {
     @Autowired
     PassengerConverter passengerConverter;
     @Override
-    public void save(PassengerDtoRequest passengerDtoRequest) {
+    public Boolean save(PassengerDtoRequest passengerDtoRequest) {
         List<PassengerDtoDetail> passengerDtoDetails = passengerDtoRequest.getPassengerDtoDetails();
         UserDtoRequestDetail userDtoRequestDetail = passengerDtoRequest.getUserDtoRequestDetail();
         String email = userDtoRequestDetail.getEmail();
         User user = userRepository.findUserByEmail(email);
-        for (PassengerDtoDetail passengerDtoDetail : passengerDtoDetails) {
-            Passenger passenger = passengerConverter.dtoToEntity(passengerDtoDetail);
-            passenger.setUser(user);
-            passengerRepository.save(passenger);
-        }
+        if (user != null) {
+            for (PassengerDtoDetail passengerDtoDetail : passengerDtoDetails) {
+                Passenger passenger = passengerConverter.dtoToEntity(passengerDtoDetail);
+                passenger.setUser(user);
+                passengerRepository.save(passenger);
+            }
+            return true;
+        }return false;
+
     }
 }
