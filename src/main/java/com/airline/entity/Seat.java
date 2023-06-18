@@ -23,7 +23,6 @@ public class Seat {
     @Column(name = "seat_class",nullable = false)
     private String seatClass;
 
-
     @Column(name = "seat_status",nullable = false)
     private Boolean seatStatus;
 
@@ -33,6 +32,7 @@ public class Seat {
     private Flight flight;
     @ManyToOne
     @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonBackReference
     private OrderTicket orders;
 
 }

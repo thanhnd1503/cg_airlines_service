@@ -1,5 +1,7 @@
 package com.airline.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,9 +35,11 @@ public class OrderTicket {
     private List<Seat> seats = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonBackReference
     private User user;
     @ManyToOne
     @JoinColumn(name = "flight_id",referencedColumnName = "id")
+    @JsonBackReference
     private Flight flight;
     @Column(name = "total_price")
     private Double totalPrice;

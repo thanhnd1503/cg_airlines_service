@@ -1,6 +1,7 @@
 package com.airline.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -61,9 +62,12 @@ public class User {
     private String rememberToken;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Ticket> tickets = new ArrayList<>();
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Passenger> passengers = new ArrayList<>();
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderTicket> bookingTickets = new ArrayList<>();
 }

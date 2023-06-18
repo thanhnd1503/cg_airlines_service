@@ -32,7 +32,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws IOException, ServletException {
         try {
-
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
@@ -43,18 +42,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-//            else {
-//                String requestUri = request.getRequestURI();
-//                if (requestUri.equals("/api/users/search") && request.getMethod().equals("POST")) {
-//                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("/api/users/search");
-//                    requestDispatcher.forward(request, response);
-//                    return;
-//                }
-//            }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
-
         filterChain.doFilter(request, response);
     }
 

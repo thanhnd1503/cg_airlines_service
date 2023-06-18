@@ -24,7 +24,23 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.4'
+	// https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+	// https://mvnrepository.com/artifact/org.webjars/jspdf
+	implementation 'org.webjars:jspdf:1.4.1'
+// https://mvnrepository.com/artifact/com.lowagie/itext
+	implementation 'com.lowagie:itext:2.1.7'
+	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+	implementation 'com.itextpdf:itextpdf:5.5.13.3'
+
+
+	implementation 'jakarta.activation:jakarta.activation-api:2.0.1'
+	implementation 'com.sun.activation:javax.activation:1.2.0'
+
+
 	compileOnly 'org.projectlombok:lombok'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
