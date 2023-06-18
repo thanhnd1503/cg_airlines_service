@@ -87,8 +87,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/**","/api/users/**")// perform segregate authorize
                 .permitAll();
 
-        // Pages require login with role: ROLE_USER
-        // If not login at user role yet, redirect to /login
 //        http.authorizeHttpRequests()
 //                .requestMatchers("/api/users/**")
 //                .hasAnyRole("CUSTOMER", "ADMIN");
