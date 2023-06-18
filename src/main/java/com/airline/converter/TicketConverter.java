@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @Component
 public class TicketConverter {
-    public TicketDtoReq entityToDto(Ticket ticket){
-        TicketDtoReq ticketDtoReq = new TicketDtoReq();
-        BeanUtils.copyProperties(ticket, ticketDtoReq);
-        return ticketDtoReq;
+    public TicketDtoRes entityToDto(Ticket ticket){
+        TicketDtoRes ticketDtoRes = new TicketDtoRes();
+        BeanUtils.copyProperties(ticket, ticketDtoRes);
+        return ticketDtoRes;
     }
 }

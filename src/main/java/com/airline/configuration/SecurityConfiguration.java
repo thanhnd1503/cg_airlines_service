@@ -38,7 +38,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfiguration {
     @Autowired
-    private UserSecurityServiceImpl CustomerDetailsService;
+    private UserSecurityServiceImpl userDetailsService;
 
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
@@ -55,7 +55,7 @@ public class SecurityConfiguration {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(CustomerDetailsService)
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -78,20 +78,29 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable();
 
-        http.authorizeHttpRequests() // links start with /api/
-                .requestMatchers("/api/**", "/api/auth/**","/api/users/**").permitAll()
-                .requestMatchers("/api/users/**").hasAnyRole("CUSTOMER", "ADMIN")
-                .requestMatchers("/api/role/**").hasRole("ADMIN");
-
-        // Use JwtAuthorizationFilter to check token -> get user info
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         http.exceptionHandling()
                 .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and()
                 // configure not use session to save client info
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.authorizeHttpRequests() // links start with /api/
+                .requestMatchers("/api/*", "/api/auth/login","/api/users/sendMail") // perform segregate authorize
+                .permitAll();
+
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/role/**", "/api/users/**","/api/users/ticket")
+                .hasRole("ADMIN");
+
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/users/**","/api/users/ticket")
+                .hasRole("USER");
+
+//        http.authorizeHttpRequests() // links start with /api/
+//                .requestMatchers("/api/**", "/api/auth/**","/api/users/**").permitAll()
+//                .requestMatchers("/api/users/**").hasAnyRole("CUSTOMER", "ADMIN")
+//                .requestMatchers("/api/role/**").hasRole("ADMIN");
 
         // When user login with ROLE_USER, but try to
         // access pages require ROLE_ADMIN, redirect to /error-403
@@ -103,6 +112,9 @@ public class SecurityConfiguration {
                 .and().rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60);//24 hours
+
+        // Use JwtAuthorizationFilter to check token -> get user info
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
