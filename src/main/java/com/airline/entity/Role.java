@@ -1,6 +1,8 @@
 package com.airline.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,7 @@ public class Role {
     private String desc;
 
     @OneToMany(mappedBy = "role")
+    @JsonManagedReference
     private List<UserRole> userRoles;
 
     public Role(int id, String name, String desc) {

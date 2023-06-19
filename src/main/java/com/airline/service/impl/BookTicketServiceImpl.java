@@ -55,7 +55,7 @@ public class BookTicketServiceImpl implements BookTicketService {
     public Long save(BookTicketDtoRequest bookTicketDtoRequest,Long userId) {
         User user = userRepository.getUserById(userId);
         Flight flight = flightRepository.findByFlightNumber(bookTicketDtoRequest.getFlightNumber());
-       OrderTicket orderTicket = bookTicketConverter.dtoToEntity(bookTicketDtoRequest);
+        OrderTicket orderTicket = bookTicketConverter.dtoToEntity(bookTicketDtoRequest);
         orderTicket.setExpireDate(Date.valueOf(LocalDate.now().plusDays(1)));
         orderTicket.setIs_status(false);
         orderTicket.setFlight(flight);
@@ -78,9 +78,12 @@ public class BookTicketServiceImpl implements BookTicketService {
         for (SeatDtoDetail seatDetail: seatsDtoDetails
         ) {
             if (seatDetail.getSeatClass().equals("A")){
-                int seatNumberA = (int) (Math.random() * 5) + 1;
-                String seatR = "A" + seatNumberA;
-                Long seatId = seatRepository.findByFlightAndSeatNumber(flight.getId(),seatR);
+                Long seatId;
+                do{
+                    int seatNumberA = (int) (Math.random() * 5) + 1;
+                    String seatR = "A" + seatNumberA;
+                    seatId = seatRepository.findByFlightAndSeatNumber(flight.getId(),seatR);
+                } while (seatId==null);
                 Optional<Seat> seat = seatRepository.findById(seatId);
                 seat.get().setSeatStatus(false);
                 seat.get().setOrders(orderTicket);
@@ -135,17 +138,25 @@ public class BookTicketServiceImpl implements BookTicketService {
             }
             price += ticket.getTicketPrice();
         }
-        OrderTicket newOrderTicket = bookTicketRepository.findById(orderTicket.getId()).get();
-        newOrderTicket.setTotalPrice(price);
-        bookTicketRepository.save(newOrderTicket);
+        orderTicket.setTotalPrice(price);
+        bookTicketRepository.save(orderTicket);
         return orderTicket.getId();
     }
 
     @Override
     public BookTicketDtoResponse getOrderTicket(Long orderTicketId) {
         OrderTicket oderRes = bookTicketRepository.findById(orderTicketId).get();
+        List<Ticket> tickets = ticketRepository.getTicketByOrders(oderRes);
+        System.out.println(tickets.size());
+        List<Passenger> passengers = passengerRepository.findAllByOrders(oderRes);
+        System.out.println(passengers.size());
         BookTicketDtoResponse ticketDtoResponse = bookTicketConverter.entityToDto(oderRes);
         return ticketDtoResponse;
+    }
+
+    @Override
+    public OrderTicket findById(Long orderId) {
+        return bookTicketRepository.findById(orderId).get();
     }
 
 
