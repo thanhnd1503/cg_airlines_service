@@ -10,7 +10,10 @@ import com.airline.entity.User;
 import java.sql.Date;
 
 public interface BookTicketService {
-    Long save(BookTicketDtoRequest bookTicketDtoRequest,Long userId);
+    Long  save(BookTicketDtoRequest bookTicketDtoRequest,Long userId);
     BookTicketDtoResponse getOrderTicket(Long orderTicketId);
+
+
+    OrderTicket findById(Long orderId);
 
 }

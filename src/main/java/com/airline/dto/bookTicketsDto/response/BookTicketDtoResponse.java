@@ -19,9 +19,10 @@ import java.util.List;
 @Setter
 public class BookTicketDtoResponse {
 
-    List<TicketDtoRes> tickets;
 
-    List<PassengerDtoDetail> passengers;
+    private List<Ticket> tickets;
+
+    private List<Passenger> passengers;
     @NotNull
     private Double totalPrice;
 }

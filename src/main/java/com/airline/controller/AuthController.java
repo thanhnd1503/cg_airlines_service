@@ -5,6 +5,7 @@ import com.airline.payload.request.LoginRequest;
 import com.airline.payload.response.LoginResponse;
 import com.airline.payload.response.checkEmailPassword;
 import com.airline.service.AuthService;
+import com.airline.service.SecurityService;
 import com.airline.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private SecurityService securityService;
 
 
     @GetMapping("/access-denied")
@@ -30,6 +33,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+//        if (securityService.isAuthenticated()) {
+//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+//        }
         try {
             LoginResponse loginResponse = authService.login(loginRequest);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);

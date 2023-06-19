@@ -44,9 +44,11 @@ public class Ticket {
     private Boolean ticketStatus;
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonBackReference
     private User user;
     @ManyToOne
     @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JsonBackReference
     private OrderTicket orders;
 
 }

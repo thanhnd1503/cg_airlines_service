@@ -4,6 +4,7 @@ import com.airline.converter.PassengerConverter;
 import com.airline.dto.passengerDto.request.PassengerDtoDetail;
 import com.airline.dto.passengerDto.request.PassengerDtoRequest;
 import com.airline.dto.userDto.request.UserDtoRequestDetail;
+import com.airline.entity.OrderTicket;
 import com.airline.entity.Passenger;
 import com.airline.entity.User;
 import com.airline.repository.PassengerRepository;
@@ -39,5 +40,10 @@ public class PassengerServiceImpl implements PassengerService {
             return true;
         }return false;
 
+    }
+
+    @Override
+    public List<Passenger> findAllByOrders(OrderTicket orderTicket) {
+        return passengerRepository.findAllByOrders(orderTicket);
     }
 }
