@@ -28,4 +28,5 @@ public interface UserService {
     UserDtoResponse getUserByEmail(String email);
     Boolean updateAddRole(Long id, Role role);
     Boolean updateRemoveRole(Long userId, Role role);
+    List<String> getRoleByUserName(String userName);
 }

@@ -19,11 +19,15 @@ public class PassengerController {
     private SecurityService securityService;
     @PostMapping("/passenger")
     public ResponseEntity<?> SavePass(@RequestBody PassengerDtoRequest passengerDtoRequest){
-//        if (!securityService.isAuthenticated()) {
-//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//        }
-        service.save(passengerDtoRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (!securityService.isAuthenticated()) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }
+        Boolean result = service.save(passengerDtoRequest);
+        if (result){
+            return new ResponseEntity<String>("Thêm hành khách thành công !",HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Khong thanh cong", HttpStatus.BAD_REQUEST);
+
     }
 
 }

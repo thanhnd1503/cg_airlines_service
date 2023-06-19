@@ -16,6 +16,16 @@ import java.sql.Date;
 @Setter
 @Table(name="ticket")
 public class Ticket {
+
+    public Ticket(String ticketNumber, Flight flight, Long ticketPrice, Date bookingDate, boolean b, User user, OrderTicket orderTicket) {
+        this.ticketNumber=ticketNumber;
+        this.flight = flight;
+        this.ticketPrice = ticketPrice;
+        this.bookingDate = bookingDate;
+        this.orders = orderTicket;
+        this.ticketStatus=b;
+        this.user=user;
+    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
@@ -37,7 +47,6 @@ public class Ticket {
     private User user;
     @ManyToOne
     @JoinColumn(name = "order_id",referencedColumnName = "id")
-    @JsonBackReference
     private OrderTicket orders;
 
 }

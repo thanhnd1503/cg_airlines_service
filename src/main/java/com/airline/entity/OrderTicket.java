@@ -22,13 +22,21 @@ public class OrderTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
     private Long id;
-
     @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Ticket> tickets = new ArrayList<>();
+    @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Passenger> passengers = new ArrayList<>();
+    @OneToMany(mappedBy = "orders",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Seat> seats = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "flight_id",referencedColumnName = "id")
+    private Flight flight;
     @Column(name = "total_price")
     private Double totalPrice;
     @Column(name = "is_status")
