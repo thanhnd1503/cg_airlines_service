@@ -23,6 +23,11 @@ public class AuthController {
     private AuthService authService;
 
 
+    @GetMapping("/access-denied")
+    public ResponseEntity<?> getAccessDenied(){
+        return new ResponseEntity<>("Access denied!", HttpStatus.FORBIDDEN);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
@@ -50,6 +55,7 @@ public class AuthController {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
     }
+   
 }
 //package com.airline.controller;
 //

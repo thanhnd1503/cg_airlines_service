@@ -1,12 +1,8 @@
-package com.airline.dto.ticketDto.response;
+package com.airline.dto.ticketDto.request;
 
 import com.airline.entity.Flight;
 import com.airline.entity.OrderTicket;
 import com.airline.entity.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +14,7 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketDtoRes {
-
+public class TicketDtoReq {
     private String ticketNumber;
 
     private Flight flight;

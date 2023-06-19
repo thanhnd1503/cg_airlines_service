@@ -44,11 +44,11 @@ public class AuthServiceImpl implements AuthService {
             Authentication authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(
                             userDtoResponse.getUserName(), loginRequest.getPassword()));
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
             // Gọi hàm tạo Token
             String token = tokenProvider.generateToken(authentication);
-            LoginResponse loginResponse = new LoginResponse(userDtoResponse, token);
+            LoginResponse loginResponse = new LoginResponse("Login successfully!", userDtoResponse, token);
+
             return loginResponse;
         }
     }

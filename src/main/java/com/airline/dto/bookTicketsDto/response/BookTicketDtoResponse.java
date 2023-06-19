@@ -1,5 +1,8 @@
 package com.airline.dto.bookTicketsDto.response;
 
+import com.airline.dto.passengerDto.request.PassengerDtoDetail;
+import com.airline.dto.passengerDto.request.PassengerDtoRequest;
+import com.airline.dto.ticketDto.response.TicketDtoRes;
 import com.airline.entity.Passenger;
 import com.airline.entity.Ticket;
 import jakarta.validation.constraints.NotNull;
@@ -16,9 +19,9 @@ import java.util.List;
 @Setter
 public class BookTicketDtoResponse {
 
-    List<Ticket> tickets;
+    List<TicketDtoRes> tickets;
 
-    List<Passenger> passengers;
+    List<PassengerDtoDetail> passengers;
     @NotNull
     private Double totalPrice;
 }

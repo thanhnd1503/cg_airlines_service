@@ -41,12 +41,7 @@ public class SecurityConfiguration {
     private UserSecurityServiceImpl CustomerDetailsService;
 
     @Autowired
-    private JwtAuthEntryPoint unauthorizedHandler;
-
-    @Bean
-    public PasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Bean
     public Filter jwtAuthenticationFilter() {
@@ -84,24 +79,16 @@ public class SecurityConfiguration {
                 .disable();
 
         http.authorizeHttpRequests() // links start with /api/
-                .requestMatchers("/api/auth/**","/api/users/**")// perform segregate authorize
-                .permitAll();
 
-//        http.authorizeHttpRequests()
-//                .requestMatchers("/api/users/**")
-//                .hasAnyRole("CUSTOMER", "ADMIN");
+                .requestMatchers("/api/**", "/api/auth/**","/api/users/**").permitAll()
+                .requestMatchers("/api/users/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .requestMatchers("/api/role/**").hasRole("ADMIN");
 
-
-
-        // Pages require login with role: ROLE_ADMIN.
-        // If not login at admin role yet, redirect to /login
-        http.authorizeHttpRequests()
-                .requestMatchers("/api/role/**")
-                .hasRole("ADMIN");
-
+        // Use JwtAuthorizationFilter to check token -> get user info
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
+                .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and()
                 // configure not use session to save client info
                 .sessionManagement()
@@ -118,9 +105,6 @@ public class SecurityConfiguration {
                 .and().rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60);//24 hours
-
-        // Use JwtAuthorizationFilter to check token -> get user info
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
